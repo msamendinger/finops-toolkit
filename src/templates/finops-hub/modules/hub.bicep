@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
 //==============================================================================
 // Parameters
 //==============================================================================
@@ -20,12 +23,6 @@ param tags object = {}
 
 @description('Optional. List of scope IDs to create exports for.')
 param exportScopes array
-
-@description('Optional. Number of days of cost data to retain in the ms-cm-exports container. Default: 0.')
-param exportRetentionInDays int = 0
-
-@description('Optional. Number of months of cost data to retain in the ingestion container. Default: 13.')
-param ingestionRetentionInMonths int = 13
 
 @description('Optional. Indicates whether ingested data should be converted to Parquet. Default: true.')
 param convertToParquet bool = true
@@ -94,8 +91,6 @@ module storage 'storage.bicep' = {
     location: location
     tags: resourceTags
     exportScopes: exportScopes
-    exportRetentionInDays: exportRetentionInDays
-    ingestionRetentionInMonths: ingestionRetentionInMonths
   }
 }
 
@@ -158,7 +153,6 @@ module keyVault 'keyVault.bicep' = {
 }
 
 //==============================================================================
-//------------------------------------------------------------------------------
 // Outputs
 //==============================================================================
 
