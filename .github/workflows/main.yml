@@ -1,6 +1,9 @@
 name: 'GitVersion'
 
-on: [push]
+on:
+    push:
+        branches:
+            - 'aromano/*'
 jobs: 
     git-version:
         runs-on: windows-latest

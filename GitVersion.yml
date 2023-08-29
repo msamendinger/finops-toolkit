@@ -1,6 +1,11 @@
-mode: Mainline
+mode: ContinuousDeployment
+next-version: 1.0.0
 branches:
-  master:
-    regex: ^latest$
-  pull-request:
-    tag: pr
+  dev:
+    mode: ContinuousDeployment
+    tag: preview
+  hotfix:
+    mode: ContinuousDelivery
+  main:
+    mode: ContinuousDelivery
+merge-message-formats: {}
