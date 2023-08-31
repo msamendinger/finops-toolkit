@@ -1,28 +1,10 @@
-mode: ContinuousDeployment
-next-version: 0.0.1
+mode: Mainline
+next-version: 0.0.2
 branches:
-  main:
-    regex: ^master$|^main$
-    mode: ContinuousDelivery
-    tag: ''
-    increment: Patch
-    prevent-increment-of-merged-branch-version: true
-    track-merge-target: false
-    source-branches: [ 'develop', 'release' ]
-    tracks-release-branches: false
-    is-release-branch: false
-    is-mainline: true
-    pre-release-weight: 55000
   develop:
-    regex: ^dev(elop)?(ment)?$
-    mode: ContinuousDeployment
-    tag: preview
-    increment: Minor
-    prevent-increment-of-merged-branch-version: false
-    track-merge-target: true
-    source-branches: []
-    tracks-release-branches: true
-    is-release-branch: false
-    is-mainline: false
-    pre-release-weight: 0
+    mode: ContinuousDelivery
+    regex: ^dev?
+    label: preview
+  main:
+    increment: minor
 merge-message-formats: {}
