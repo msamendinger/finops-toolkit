@@ -10,8 +10,8 @@ On this page:
 - [🚀 Deploy-Toolkit](#-deploy-toolkit)
 - [🚚 Publish-Toolkit](#-publish-toolkit)
 - [📦 Package-Toolkit](#-package-toolkit)
-- [©️ Add-CopyrightHeader](#️-add-copyrightheader)
 - [📁 New-Directory](#-new-directory)
+- [▶️ Invoke-Task](#️-invoke-task)
 - [🌿 New-FeatureBranch](#-new-featurebranch)
 - [🔀 Merge-DevBranch](#-merge-devbranch)
 
@@ -202,9 +202,15 @@ Examples:
 
 <br>
 
-## ©️ Add-CopyrightHeader
+## ▶️ Invoke-Task
 
-[Add-CopyrightHeader.ps1](./Add-CopyrightHeader.ps1) checks all files to ensure they have a copyright header. Generates a summary of the number of files checked, files updated, and file types that are not supported. Run this script whenever adding new code files.
+[Invoke-Task.ps1](./Invoke-Task.ps1) runs a build task from the [.build](../../.build) directory.
+
+Supported build tasks include:
+
+### Invoke-Task Copyright
+
+Checks all files to ensure they have a copyright header. Generates a summary of the number of files checked, files updated, and file types that are not supported. Run this script whenever adding new code files.
 
 If unsupported file types are found, the script needs to be updated to either specify the comment character(s) or ignore the file type.
 
@@ -212,10 +218,11 @@ To specify the comment character(s), update the `$fileTypes` variable:
 
 ```powershell
 $fileTypes = @{
-    "bicep" = "//"
-    "ps1"   = "#"
-    "psd1"  = "#"
-    "psm1"  = "#"
+    "bicep" = "// {0}"
+    "html"  = "<!-- {0} -->"
+    "ps1"   = "# {0}"
+    "psd1"  = "# {0}"
+    "psm1"  = "# {0}"
 }
 ```
 
@@ -228,6 +235,12 @@ Get-ChildItem `
     -Include *.* `
     -Exclude *.abf, *.bim, .buildignore, .gitignore, *.json, *.md, *.pbidataset, *.pbip, *.pbir, *.pbix, *.png, *.svg `
     -File
+```
+
+To ignore a folder, add it to the `if` block:
+
+```powershell
+if ($file.FullName.Contains('node_modules') -or $file.FullName.Contains('release'))
 ```
 
 <br>
