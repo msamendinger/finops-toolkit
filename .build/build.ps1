@@ -21,9 +21,14 @@ task Clean {
 
 task PreRequisites {
     $helperPath = Join-Path -Path $PSScriptRoot -ChildPath 'BuildHelper.psm1'
-    if (-not (Get-Module BuildHelper)) {
+    if (-not (Get-Module BuildHelper))
+    {
         Import-Module -FullyQualifiedName $helperPath
     }
+}
+
+task Copyright PreRequisites, {
+    Add-CopyrightHeader
 }
 
 task Build.PsModule PreRequisites, Clean, {
@@ -31,21 +36,27 @@ task Build.PsModule PreRequisites, Clean, {
 }
 
 task Publish.PsModule Build.PsModule, {
-    if (-not $TaskParams.ApiKey) {
+    if (-not $TaskParams.ApiKey)
+    {
         throw 'Missing required parameter "ApiKey".'
     }
 
-    try {
+    try
+    {
         Remove-Module -Name $moduleName -Force -ErrorAction 'SilentlyContinue'
         Import-Module -Name $modulePath -ErrorAction 'Stop'
         $moduleInfo = Get-Module -Name $moduleName -ErrorAction 'Stop'
-    } catch {
+    }
+    catch
+    {
         throw $_
     }
 
     $parameters = @{}
-    foreach ($key in @('Tags', 'IconUri', 'ProjectUri', 'LicenseUri', 'ReleaseNotes')) {
-        if ($moduleInfo.$key) {
+    foreach ($key in @('Tags', 'IconUri', 'ProjectUri', 'LicenseUri', 'ReleaseNotes'))
+    {
+        if ($moduleInfo.$key)
+        {
             $parameters.Add($key, $moduleInfo.$key)
         }
     }
@@ -64,5 +75,5 @@ task Test.PowerShell.Lint PreRequisites, {
 task Test.PowerShell.All Test.PowerShell.Lint, Test.PowerShell.Unit, {}
 
 task Version PreRequisites, {
-    return (& "$PSScriptRoot/../src/scripts/Update-Version" -Major:$TaskParams.Major -Minor:$TaskParams.Minor -Patch:$TaskParams.Patch -Prerelease:$TaskParams.Prerelease -Label $TaskParams.Label -Version $TaskParams.Version -Verbose:$VerbosePreference)
+    return (& "$PSScriptRoot/../src/scripts/Update-Version.ps1" -Major:$TaskParams.Major -Minor:$TaskParams.Minor -Patch:$TaskParams.Patch -Prerelease:$TaskParams.Prerelease -Label $TaskParams.Label -Version $TaskParams.Version -Verbose:$VerbosePreference)
 }

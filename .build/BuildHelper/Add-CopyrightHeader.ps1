@@ -19,7 +19,7 @@ function Add-CopyrightHeader
     param
     (
         [Parameter()]
-        [ValidateScript({Test-Path -Path $_})]
+        [ValidateScript({ Test-Path -Path $_ })]
         [string]
         $Path = "$PSScriptRoot/../.."
     )
@@ -31,13 +31,17 @@ function Add-CopyrightHeader
 
     # File types to add the copyright header to and their comment characters
     $fileTypes = @{
-        bicep = "//"
-        ps1   = "#"
-        psd1  = "#"
-        psm1  = "#"
+        bicep = "// {0}"
+        css   = "/* {0} */"
+        html  = "<!-- {0} -->"
+        js    = "// {0}"
+        ps1   = "# {0}"
+        psd1  = "# {0}"
+        psm1  = "# {0}"
+        scss  = "// {0}"
     }
 
-    $exclude = '*.abf', '*.xml', '*.yml', '*.bim', '.buildignore', '.editorconfig', '.prettierrc', '.gitignore', '*.json', '*.md', '*.pbidataset', '*.pbip', '*.pbir', '*.pbix', '*.png', '*.svg' 
+    $exclude = 'node_modules', '.*', 'version.txt', '*.abf', '*.bim', '*.csv', '*.ico', '*.json', '*.md', '*.pbidataset', '*.pbip', '*.pbir', '*.pbix', '*.png', '*.svg', '*.workbook', '*.xml', '*.yml'
     $newLine = [Environment]::NewLine
 
     $valid = 0
@@ -49,25 +53,30 @@ function Add-CopyrightHeader
     {
         # Look up the comment character for the file type
         $ext = $file.Extension.TrimStart(".")
-        if ($fileTypes.ContainsKey($ext))
+        if ($file.FullName.Contains('node_modules') -or $file.FullName.Contains('release'))
         {
-            $commentChar = $fileTypes[$file.Extension.TrimStart(".")]
+            # Ignore files in node_modules
+            continue
+        }
+        elseif ($fileTypes.ContainsKey($ext))
+        {
+            $commentFormat = $fileTypes[$file.Extension.TrimStart(".")]
         }
         else
         {
-            Write-Information "SKIPPED: [$($file.FullName)]: File type not supported: $ext" -InformationAction Continue
+            Write-Warning "SKIPPED: [$($file.FullName)]: File type not supported: $ext" -WarningAction Continue
             $notSupported++
             continue
         }
         
         # Build the header
-        $header = "$commentChar " + ($headerLines -join "$newLine$commentChar ") + $newLine + $newLine
+        $header = (($headerLines | ForEach-Object { [string]::Format($commentFormat + $newLine, $_) }) -join '') + $newLine
 
         # Check if the file already has the header and add it if missing
         $content = Get-Content $file.FullName -Raw
         if ($content.StartsWith($header))
         {
-            Write-Information "SKIPPED: [$($file.FullName)]: already has header." -InformationAction Continue
+            Write-Verbose "SKIPPED: [$($file.FullName)]: already has header."
             $valid++
         }
         else

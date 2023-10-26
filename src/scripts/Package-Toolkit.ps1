@@ -13,6 +13,9 @@
 
     .PARAMETER Build
     Optional. Indicates whether the Build-Toolkit command should be executed first. Default = false.
+    
+    .PARAMETER SkipPowerBI
+    Optional. Indicates whether the not open Power BI reports (since they require manually saving as PBIX). Default = false.
 
     .EXAMPLE
     ./Package-Toolkit
@@ -26,14 +29,28 @@
 #>
 Param(
     [Parameter(Position = 0)][string]$Template = "*",
-    [switch]$Build
+    [switch]
+    $Build,
+
+    [switch]
+    $SkipPowerBI
 )
 
 # Use the debug flag from common parameters to determine whether to run in debug mode
 $Debug = $DebugPreference -eq "Continue"
 
 # Build toolkit if requested
-if ($Build) {
+if ($Build)
+{
+    Write-Host "Building open data commands..."
+    & "$PSScriptRoot/Build-OpenData"
+
+    Write-Verbose "Adding copyright headers..."
+    & "$PSScriptRoot/../../.build/BuildHelper/Add-CopyrightHeader"
+
+    Write-Verbose "Building PowerShell module..."
+    & "$PSScriptRoot/Build-PowerShell"
+
     Write-Verbose "Building $(if ($Template -eq "*") { "all templates" } else { "the $Template template" })..."
     & "$PSScriptRoot/Build-Toolkit" $Template
 }
@@ -41,7 +58,8 @@ if ($Build) {
 $relDir = "$PSScriptRoot/../../release"
 
 # Validate template
-if ($Template -ne "*" -and -not (Test-Path $relDir)) {
+if ($Template -ne "*" -and -not (Test-Path $relDir))
+{
     Write-Error "$Template template not found. Please confirm template name."
     return
 }
@@ -62,18 +80,21 @@ $templates = Get-ChildItem $relDir -Directory `
     $zip = Join-Path (Get-Item $relDir) "$($path.Name)-$version.zip"
 
     Write-Verbose "Checking for a nested version folder: $versionSubFolder"
-    if ((Test-Path -Path $versionSubFolder -PathType Container) -eq $true) {
+    if ((Test-Path -Path $versionSubFolder -PathType Container) -eq $true)
+    {
         Write-Verbose "  Switching to sub folder"
         $path = $versionSubFolder
     }
     
     # Skip if template is a Bicep Registry module
     Write-Verbose "Checking version.json to see if it's targeting the Bicep Registry"
-    if (Test-Path $path/version.json) {
+    if (Test-Path $path/version.json)
+    {
         $versionSchema = (Get-Content "$path\version.json" -Raw | ConvertFrom-Json | Select-Object -ExpandProperty '$schema')
-        if ($versionSchema -like '*bicep-registry-module*') {
+        if ($versionSchema -like '*bicep-registry-module*')
+        {
             Write-Verbose "Skipping Bicep Registry module (not included in releases)"
-            return;
+            return
         }
     }
 

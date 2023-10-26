@@ -6,7 +6,7 @@
 param
 (
     [Parameter(Mandatory = $true)]
-    [ValidateSet('PreRequisites', 'Build.PsModule', 'Publish.PsModule', 'Test.PowerShell.Unit', 'Test.PowerShell.Lint', 'Test.PowerShell.All', 'Version')]
+    [ValidateSet('Copyright', 'PreRequisites', 'Build.PsModule', 'Publish.PsModule', 'Test.PowerShell.Unit', 'Test.PowerShell.Lint', 'Test.PowerShell.All', 'Version')]
     [string[]]
     $Task,
 
@@ -43,15 +43,20 @@ param
 $buildPath = Join-Path -Path $PSScriptRoot -ChildPath 'build.ps1'
 if (-not $env:CI)
 {
-    if (-not (Get-Module -Name 'PsDepend' -ListAvailable)) {
+    if (-not (Get-Module -Name 'PsDepend' -ListAvailable))
+    {
         $repository = Get-PSRepository -Name 'PSGallery'
-        if ($repository.InstallationPolicy -ne 'Trusted') {
+        if ($repository.InstallationPolicy -ne 'Trusted')
+        {
             Set-PSRepository -Name 'PSGallery' -InstallationPolicy Trusted
         }
     
-        try {
+        try
+        {
             Install-Module -Name 'PsDepend' -Force -AllowClobber -Scope CurrentUser -ErrorAction 'Stop'
-        } catch {
+        }
+        catch
+        {
             throw $_
         }
     }

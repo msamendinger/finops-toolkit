@@ -1,5 +1,6 @@
 # Copyright (c) Microsoft Corporation.
 # Licensed under the MIT License.
+
 <#
     .SYNOPSIS
     Gets the unique 13 character string that Azure deployments add to a resource from a list of strings.

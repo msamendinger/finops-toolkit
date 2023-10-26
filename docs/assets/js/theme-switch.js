@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation.
+// Licensed under the MIT License.
+
 window.addEventListener('DOMContentLoaded', function () {
   const toggleDarkMode = document.getElementById('theme-toggle');
 
