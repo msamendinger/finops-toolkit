@@ -3,7 +3,7 @@ layout: default
 parent: PowerShell
 title: FOCUS
 has_children: true
-nav_order: 3
+nav_order: 8
 description: 'PowerShell commands to work with the FinOps Open Cost and Usage Specification.'
 permalink: /powershell/focus
 ---
@@ -26,14 +26,18 @@ Work with the the FinOps Open Cost and Usage Specification (FOCUS).
 
 ---
 
-The FOCUS PowerShell commands help you work with the [FinOps Open Cost and Usage Specification (FOCUS)](https://focus.finops.org).
+<blockquote class="warning" markdown="1">
+    _FOCUS commands were implemented before Microsoft Cost Management supported a native FOCUS export. Going forward, we recommend using the native export. These commands will remain available but will not be updated to support FOCUS 1.0-preview. If you have a scenario where you need a PowerShell converter, please leave feedback at [aka.ms/ftk](https://aka.ms/ftk)._
+</blockquote>
+
+The FOCUS PowerShell commands help you work with the [FinOps Open Cost and Usage Specification (FOCUS)](../../focus/README.md).
 
 <br>
 
 ## ⚡ Commands
 
 - [ConvertTo-FinOpsSchema](ConvertTo-FinOpsSchema.md) – Converts Cost Management cost data to the FOCUS schema.
-- [Invoke-FinOpsSchema](Invoke-FinOpsSchema.md) – Loads Cost Management data from a CSV file, converts it to FOCUS schema, and saves it to a new CSV file.
+- [Invoke-FinOpsSchemaTransform](Invoke-FinOpsSchemaTransform.md) – Loads Cost Management data from a CSV file, converts it to FOCUS schema, and saves it to a new CSV file.
 
 <br>
 

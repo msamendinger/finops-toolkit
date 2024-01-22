@@ -1,12 +1,12 @@
 # Copyright (c) Microsoft Corporation.
 # Licensed under the MIT License.
 
-Remove-Module FinOpsToolkit -ErrorAction SilentlyContinue
-Import-Module -FullyQualifiedName "$PSScriptRoot/../../FinOpsToolkit.psm1"
+& "$PSScriptRoot/../Initialize-Tests.ps1"
 
 InModuleScope 'FinOpsToolkit' {
     BeforeAll {
-        function Get-MockCostDetails {
+        function Get-MockCostDetails
+        {
             return @(
                 @{
                     # EA actual cost row
@@ -78,7 +78,8 @@ InModuleScope 'FinOpsToolkit' {
             )
         }
 
-        function Run-Test($actual, $amortized) {
+        function Run-Test($actual, $amortized)
+        {
             ConvertTo-FinOpsSchema -ActualCost $actual -AmortizedCost $amortized
         }
     }
@@ -91,11 +92,11 @@ InModuleScope 'FinOpsToolkit' {
             }
             BeforeEach {
                 $data = @(Get-MockCostDetails)
-                
+
                 $commitmentPurchase = @(Get-MockCostDetails)
                 $commitmentPurchase[0].ChargeType = 'Purchase'
                 $commitmentPurchase[0].PricingModel = 'Reservation'
-                
+
                 $commitmentUsage = @(Get-MockCostDetails)
                 $commitmentUsage[0].ChargeType = 'Usage'
                 $commitmentUsage[0].PricingModel = 'SavingsPlan'
@@ -104,7 +105,7 @@ InModuleScope 'FinOpsToolkit' {
                 # Arrange
                 # Act
                 $result = Run-Test @() @()
-                
+
                 # Assert
                 Should -Invoke -CommandName Write-Error -Exactly -Times 1
                 $result | Should -BeNullOrEmpty
@@ -113,7 +114,7 @@ InModuleScope 'FinOpsToolkit' {
                 # Arrange
                 # Act
                 $result = Run-Test @() $data
-                
+
                 # Assert
                 Should -Invoke -CommandName Write-Warning -Exactly -Times 1
                 @($result).Count | Should -Be $data.Count
@@ -122,7 +123,7 @@ InModuleScope 'FinOpsToolkit' {
                 # Arrange
                 # Act
                 $result = Run-Test $data @()
-                
+
                 # Assert
                 Should -Invoke -CommandName Write-Warning -Exactly -Times 1
                 @($result).Count | Should -Be $data.Count
@@ -131,7 +132,7 @@ InModuleScope 'FinOpsToolkit' {
                 # Arrange
                 # Act
                 $result = Run-Test @($commitmentUsage) @($data)
-                
+
                 # Assert
                 Should -Invoke -CommandName Write-Error -Exactly -Times 1
                 @($result).Count | Should -Be ($data.Count + $commitmentUsage.Count)
@@ -140,7 +141,7 @@ InModuleScope 'FinOpsToolkit' {
                 # Arrange
                 # Act
                 $result = Run-Test @($data) @($commitmentPurchase)
-                
+
                 # Assert
                 Should -Invoke -CommandName Write-Error -Exactly -Times 1
                 @($result).Count | Should -Be ($data.Count + $commitmentPurchase.Count)
@@ -164,7 +165,7 @@ InModuleScope 'FinOpsToolkit' {
 
                 # Act
                 $result = Run-Test $data $data | Select-Object -First 1
-                
+
                 # Assert
                 $result.AmortizedCost      | Should -Be ($data.Cost ?? $data.CostInBillingCurrency -as [double])
                 $result.AvailabilityZone   | Should -Be $data.AvailabilityZone
@@ -187,37 +188,37 @@ InModuleScope 'FinOpsToolkit' {
                 $result.ServiceName        | Should -Be $expectedService.ServiceName
                 $result.SubAccountId       | Should -Be "/subscriptions/$($data.SubscriptionId)"
                 $result.SubAccountName     | Should -Be $data.SubscriptionName
-            }    
+            }
             It 'Should prefix all non-0.5 columns' {
                 # Arrange
                 $focusColumns = @(
                     'AmortizedCost',
-                    'AvailabilityZone', 
-                    'BilledCost', 
-                    'BillingAccountId', 
-                    'BillingAccountName', 
-                    'BillingCurrency', 
-                    'BillingPeriodEnd', 
-                    'BillingPeriodStart', 
-                    'ChargePeriodEnd', 
-                    'ChargePeriodStart', 
-                    'ChargeType', 
-                    'InvoiceIssuerName', 
-                    'ProviderName', 
-                    'PublisherName', 
-                    'Region', 
-                    'ResourceId', 
-                    'ResourceName', 
-                    'ServiceCategory', 
-                    'ServiceName', 
-                    'SubAccountId', 
+                    'AvailabilityZone',
+                    'BilledCost',
+                    'BillingAccountId',
+                    'BillingAccountName',
+                    'BillingCurrency',
+                    'BillingPeriodEnd',
+                    'BillingPeriodStart',
+                    'ChargePeriodEnd',
+                    'ChargePeriodStart',
+                    'ChargeType',
+                    'InvoiceIssuerName',
+                    'ProviderName',
+                    'PublisherName',
+                    'Region',
+                    'ResourceId',
+                    'ResourceName',
+                    'ServiceCategory',
+                    'ServiceName',
+                    'SubAccountId',
                     'SubAccountName'
                 )
                 $knownColumns = $focusColumns + @("ftk_*")
 
                 # Act
                 $result = (Run-Test $data $data)[0]
-                
+
                 # Assert
                 $result `
                 | Select-Object -Property * -ExcludeProperty $knownColumns `
@@ -227,32 +228,32 @@ InModuleScope 'FinOpsToolkit' {
                 # Arrange
                 $focusColumns = @(
                     'AmortizedCost',
-                    'AvailabilityZone', 
-                    'BilledCost', 
-                    'BillingAccountId', 
-                    'BillingAccountName', 
-                    'BillingCurrency', 
-                    'BillingPeriodEnd', 
-                    'BillingPeriodStart', 
-                    'ChargePeriodEnd', 
-                    'ChargePeriodStart', 
-                    'ChargeType', 
-                    'InvoiceIssuerName', 
-                    'ProviderName', 
-                    'PublisherName', 
-                    'Region', 
-                    'ResourceId', 
-                    'ResourceName', 
-                    'ServiceCategory', 
-                    'ServiceName', 
-                    'SubAccountId', 
+                    'AvailabilityZone',
+                    'BilledCost',
+                    'BillingAccountId',
+                    'BillingAccountName',
+                    'BillingCurrency',
+                    'BillingPeriodEnd',
+                    'BillingPeriodStart',
+                    'ChargePeriodEnd',
+                    'ChargePeriodStart',
+                    'ChargeType',
+                    'InvoiceIssuerName',
+                    'ProviderName',
+                    'PublisherName',
+                    'Region',
+                    'ResourceId',
+                    'ResourceName',
+                    'ServiceCategory',
+                    'ServiceName',
+                    'SubAccountId',
                     'SubAccountName'
                 )
                 $knownColumns = $focusColumns + @("ftk_*")
 
                 # Act
                 $result = (Run-Test $data $data)[0]
-                
+
                 # Assert
                 $result `
                 | Select-Object -Property * -ExcludeProperty $knownColumns `
