@@ -97,7 +97,7 @@ Legend:
 >
 > ✏️ Changed:
 >
-> 1. Updated [Cost summary](./power-bi/cost-summary.md) and [Commitment discounts](./power-bi/commitment-discounts.md) reports to [FOCUS 1.0 preview](./focus/README.md).
+> 1. Updated [Cost summary](./power-bi/cost-summary.md) and [Commitment discounts](./power-bi/commitment-discounts.md) reports to [FOCUS 1.0 preview](./_docs/focus/README.md).
 > 2. Updated [Cost summary](./power-bi/cost-summary.md) and [Commitment discounts](./power-bi/commitment-discounts.md) reports to only use [FinOps hubs](./finops-hub/README.md).
 > 3. Removed unused custom visualizations.
 > 4. Organized setup instructions in Cost summary to match other reports.

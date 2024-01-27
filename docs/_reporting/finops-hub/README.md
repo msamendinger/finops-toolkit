@@ -66,7 +66,7 @@ FinOps hubs will streamline implementing the FinOps Framework, are being designe
 - Connect Power BI to Microsoft Online Services Agreement (MOSA) subscriptions<sup>1</sup>.
 - Report on multiple subscriptions, resource groups, or billing accounts.
 - Streamlined deployment and management with PowerShell.
-- Full alignment with the [FinOps Open Cost and Usage Specification (FOCUS)](../focus/README.md).
+- Full alignment with the [FinOps Open Cost and Usage Specification (FOCUS)](../_docs/focus/README.md).
 - _Coming soon: Ingest data from subscriptions in multiple tenants into a single storage account._
 - _Coming soon: Ingest data into Azure Data Explorer._
 

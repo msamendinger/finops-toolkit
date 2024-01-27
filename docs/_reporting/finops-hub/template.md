@@ -97,10 +97,10 @@ Resources use the following naming convention: `<hubName>-<purpose>-<unique-suff
       - `settings.json` – Hub settings.
 - `<hubName>-engine-<unique-suffix>` Data Factory instance
   - Pipelines:
-    - `msexport_ExecuteETL` – Triggers the ingestion process for Cost Management exports to account for Data Factory pipeline trigger limits.
+    - `msexports_ExecuteETL` – Triggers the ingestion process for Cost Management exports to account for Data Factory pipeline trigger limits.
     - `msexports_ETL_transform` – Converts Cost Management exports into parquet or gzipped CSV and removes historical data duplicated in each day's export.
   - Triggers:
-    - `msexport_FileAdded` – Triggers the `msexport_extract` pipeline when Cost Management exports complete.
+    - `msexports_FileAdded` – Triggers the `msexports_ExecuteETL` pipeline when Cost Management exports complete.
 - `<hubName>-vault-<unique-suffix>` Key Vault instance
   - Secrets:
     - Data Factory system managed identity

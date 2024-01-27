@@ -1,7 +1,8 @@
 ---
 layout: default
-title: Home
+title: FinOps toolkit - Kick start your FinOps efforts
 nav_order: 1
+nav_exclude: true
 description: 'Automate and extend the Microsoft Cloud with starter kits, scripts, and advanced solutions to accelerate your FinOps journey.'
 permalink: /
 ---
@@ -15,9 +16,9 @@ Automate and extend the Microsoft Cloud with starter kits, scripts, and advanced
 
 ---
 
-The FinOps toolkit is a collection of customizable scripts and Azure Resource Manager (ARM) templates used to deploy and manage FinOps solutions that automate and extend native Microsoft Cloud capabilities. This includes:
+The Microsoft FinOps toolkit is an open-source collection of customizable tools to help you adopt and implement FinOps capabilities that automate and extend native Microsoft Cloud capabilities. This includes:
 
-- Starter kits that help you get up and running with Cost Management.
+- Starter kits that help you get up and running.
 - Automation scripts to streamline cost management and optimization at scale.
 - Advanced solutions to facilitate building custom capabilities.
 
@@ -29,14 +30,10 @@ Read on to learn about the tools and roadmap for the FinOps toolkit or how to ge
 
 {% include tools.md all="1" %}
 
-### In development
-
-- FinOps hubs – Ingest and normalize EA/MCA costs from multiple tenants into Azure Data Explorer.
-- PowerShell – Manage FinOps hubs and convert Cost Management data to FOCUS.
-
 <br>
 
 [Download FinOps toolkit {% include version.txt %}](https://aka.ms/ftk/latest){: .btn .btn-primary .mb-4 .mb-md-0 .mr-4 }
+[Share feedback](https://aka.ms/ftk/feedback){: .btn .btn .mb-4 .mb-md-0 .mr-4 }
 
 <br>
 
@@ -63,7 +60,7 @@ FinOps toolkit is an open source project. We have many ideas on the long-term vi
 
 All the main changes are tracked in the changelog. For additional details, refer to the commit history.
 
-[Explore the changelog](./changelog.md){: .btn .mt-2 .mb-4 .mb-md-0 .mr-4 }
+[Explore the changelog](./_resources/changelog.md){: .btn .mt-2 .mb-4 .mb-md-0 .mr-4 }
 [Browse the commit history](https://github.com/microsoft/finops-toolkit/commits/main){: .btn .mt-2 .mb-4 .mb-md-0 .mr-4 }
 
 <br>
